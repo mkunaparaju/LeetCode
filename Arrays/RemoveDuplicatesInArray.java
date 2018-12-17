@@ -25,6 +25,7 @@ public class RemoveDuplicatesInArray {
         for(int i = 0; i < array.length; i++)   {
             
         }
+        return null;
     }
 
     private static void printArray(int [] array)    {
