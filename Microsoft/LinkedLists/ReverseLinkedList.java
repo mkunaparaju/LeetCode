@@ -16,8 +16,6 @@ public class ReverseLinkedList {
             System.out.println(returned.val);
             returned =returned.next;
         }
-
-
     }
 
     public ListNode reverseList(ListNode head) {
@@ -34,6 +32,20 @@ public class ReverseLinkedList {
         return prev;
     }
 
+    private ListNode reverseRecursively(ListNode node){
+        ListNode newHead;
+
+        //base case - tail of original linked list
+        if((node.next == null)){
+            return node;
+        }
+        newHead = reverseRecursively(node.next);
+
+        //reverse the link e.g. C->D->null will be null
+        node.next.next = node;
+        node.next = null;
+        return newHead;
+    }
 
 
 }
