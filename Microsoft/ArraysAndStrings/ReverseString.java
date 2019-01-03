@@ -1,7 +1,5 @@
 package Microsoft.ArraysAndStrings;
 
-import com.sun.org.apache.regexp.internal.RE;
-
 public class ReverseString {
     public static void main(String[] args) {
         String in = "A man, a plan, a canal: Panama";
