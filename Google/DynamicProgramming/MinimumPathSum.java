@@ -58,18 +58,20 @@ public class MinimumPathSum {
     }
 
     private int minPathBottomUp(int [][] grid){
-        int [][] path = new int [grid.length][grid[0].length];
-        for (int[] row: path) {
-            Arrays.fill(row, -1);
-        }
-        path[grid.length -1] [grid[0].length - 1] = grid[grid.length - 1][grid[0].length - 1];
-        for(int i = grid.length - 1; i >0; i--){
-            for(int j = grid[0].length - 1; j >0; j--){
-                path[i-1][j] = (path[i-1][j] == -1)? (grid[i][j] + grid[i-1][j]) : (path[i-1][j] < grid[i][j] + grid[i-1][j])? path[i-1][j] : grid[i][j] + grid[i-1][j];
-                path[i][j-1] = (path[i][j-1] == -1)? (grid[i][j] + grid[i][j-1]) : (path[i][j-1] < grid[i][j] + grid[i][j-1])? path[i][j-1] : grid[i][j] + grid[i][j-1];
-            }
-        }
-
-        return path[0][0];
+       for(int i = 0; i < grid.length; i++){
+           for(int j = 0; j < grid[i].length; j++){
+               if(i == 0) {
+                   if(j!=0) grid[i][j] = grid[i][j] + grid[i][j-1];
+                   continue;
+               }
+               if(j == 0) {
+                   if(i!=0) grid[i][j] = grid[i][j] + grid[i-1][j];
+                   continue;
+               }
+               int min = (grid[i-1][j] < grid[i][j-1])? grid[i-1][j]:grid[i][j-1];
+               grid[i][j] = grid[i][j] + min;
+           }
+       }
+       return grid[grid.length - 1][grid[0].length - 1];
     }
 }
