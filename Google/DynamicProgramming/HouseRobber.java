@@ -22,13 +22,14 @@ public class HouseRobber {
 //        return robMemo(nums,0, vals);
 
 //        return robSimpleDp(nums);
+//        return robCircleDp(nums, 1, nums.length - 1);
         return Math.max(robCircleDp(nums,0,nums.length - 2),robCircleDp(nums, 1, nums.length - 1)) ;
     }
 
     private int robCircleDp(int[] nums, int index, int end) {
         if(nums.length == 0 ) return 0;
         if(nums.length == 1) return nums[0];
-        int [] dp = new int [nums.length+1];
+        int [] dp = new int [nums.length + index];
         dp[index] = 0;
         dp[index + 1] = nums[index];
 
@@ -36,7 +37,7 @@ public class HouseRobber {
             dp[i+1] = Math.max(dp[i], nums[i] + dp[i-1]);
         }
 
-        return dp[nums.length];
+        return dp[end + 1];
     }
 
 
