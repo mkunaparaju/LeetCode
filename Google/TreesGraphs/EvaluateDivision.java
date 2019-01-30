@@ -1,81 +1,37 @@
 package Google.TreesGraphs;
 
-import sun.security.krb5.internal.PAData;
-
-import java.util.ArrayDeque;
 import java.util.HashMap;
 
 public class EvaluateDivision {
 
     public static void main(String[] args) {
+
     }
 
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
-        HashMap<String, Node> nodeMap = new HashMap<>();
-        double [] answers = new double[queries.length];
+        HashMap<String, Node> nodeMap= new HashMap<>();
 
-        for(int i = 0; i < equations.length ; i++){
+        for(int i = 0; i< equations.length; i++){
             String [] equation = equations[i];
-            String parent = equation[0];
-            String child = equation[1];
 
-            Node parentNode = null;
-            Node childNode = null;
+            Node toChildNode = new Node(equation[1],values[i]);
+            Node toParentNode  = new Node(equation[0], (1/values[i]));
 
-            if(!nodeMap.containsKey(parent)) {
-                parentNode = new Node(parent);
-                nodeMap.put(parent, parentNode);
-            } else {
-                parentNode = nodeMap.get(parent);
-            }
-
-            if(!nodeMap.containsKey(child)){
-                childNode = new Node(child);
-                nodeMap.put(child, childNode);
-            } else {
-                childNode = nodeMap.get(child);
-            }
-
-            parentNode.addChild(childNode, values[i]);
-            childNode.addParent(parentNode, 1/values[i]);
+            nodeMap.put(equation[0], toChildNode);
+            nodeMap.put(equation[1], toParentNode);
         }
 
-        for(int i = 0; i < queries.length; i++){
-            int pathValue = getPathVal(queries[i][0],queries[i][1], nodeMap);
-        }
-
-        return answers;
-    }
-
-    private int getPathVal(String pQuery, String cQuery, HashMap<String, Node> nodeMap) {
-        ArrayDeque childStack = new ArrayDeque();
-
-        
+return null;
     }
 }
 
-
 class Node{
     private String label;
-    private HashMap<String, Double> childMap;
-    private HashMap<String, Double> parentMap;
+    private double value;
 
-    Node(String lable){
-        this.label = lable;
-        childMap =new HashMap<>();
-        parentMap = new HashMap<>();
-    }
-
-    void addChild(Node child, double weight){
-       if( !childMap.containsKey(child.label)) {
-            childMap.put(child.label, weight);
-        }
-    }
-
-    void addParent(Node parent, double weight){
-        if(!parentMap.containsKey(parent.label)){
-            parentMap.put(parent.label, weight);
-        }
+    Node(String label, double value){
+        this.label = label;
+        this.value = value;
     }
 
 }
