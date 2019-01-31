@@ -74,6 +74,8 @@ public class RobotRoomCleaner {
             }
             robot.turnRight();
             dir = (dir+1) %4;
+
+
         }
     }
 
