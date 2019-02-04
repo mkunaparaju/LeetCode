@@ -8,7 +8,7 @@ public class LongestSubStringWithKDistinct {
 
 
         LongestSubStringWithKDistinct lskd = new LongestSubStringWithKDistinct();
-        System.out.println(lskd.lengthOfLongestSubstringKDistinct("a", 0));
+        System.out.println(lskd.lengthOfLongestSubstringKDistinct(in3, 2));
     }
 
     public int lengthOfLongestSubstringKDistinct(String s, int k) {
@@ -33,6 +33,7 @@ public class LongestSubStringWithKDistinct {
                    // p2++;
                     p1++;
                     p2 = p1;
+                    //p2++;
                     System.out.println("temp7 "+ tempLongest);
                     longestString = (longestString.length() < tempLongest.length()) ? tempLongest : longestString;
                     unique = 1;
