@@ -11,10 +11,13 @@ public class WordSearch {
         char [][] board  ={ {'A','B','C','E'}, {'S','F','C','S'}, {'A','D','E','E'}};
         String word= "ABCCED";
         String word1 = "SEE";
+        String word2 = "SABCCE" ;
         String word3= "ABCB";
 
+
+
         WordSearch ws= new WordSearch();
-        System.out.println(ws.exist(board, word));
+        System.out.println(ws.exist(board, word2));
 
     }
 
@@ -32,12 +35,16 @@ public class WordSearch {
     }
 
     private boolean makeWord(char[][] board, String word, Coord coord, int index, HashSet<Coord> visited, String madeWord) {
-        if(madeWord == word) return true;
-        if(index == word.length()) return false;
+
         madeWord= madeWord+ word.charAt(index);
-        List<Coord> poss = getPossibleCoordinates(board, word.charAt(index), coord, visited);
+        System.out.println("word " + word + " madeWord " + madeWord + " index " + index + " coord "  + coord.row + " " + coord.col);
+        if(madeWord.equalsIgnoreCase(word)) return true;
+        if(index == word.length()-1) return false;
+       // madeWord= madeWord+ word.charAt(index);
+        List<Coord> poss = getPossibleCoordinates(board, word.charAt(index+1), coord, visited);
 
         for(Coord next : poss){
+            System.out.println("row " + next.row + " col " + next.col);
             visited.add(next);
             boolean nextWord = makeWord(board, word, next, index+1, visited, madeWord);
             if(nextWord) return true;
@@ -47,32 +54,36 @@ public class WordSearch {
 
     private List<Coord> getPossibleCoordinates(char[][] board, char letter, Coord presentCoord, HashSet<Coord> visited) {
         List<Coord> poss= new ArrayList<>();
-
+        System.out.println("letter " + letter +  " coord "  + presentCoord.row + " " + presentCoord.col);
         if(presentCoord.row != 0 ) {
             int row = presentCoord.row - 1,  col = presentCoord.col;
             Coord c1 = new Coord(row, col);
             if(!visited.contains(c1) && board[row][col] == letter ) poss.add(c1);
+            System.out.println("row " + row + " col " + col);
         }
 
         if(presentCoord.col != 0 ) {
             int row = presentCoord.row,  col = presentCoord.col-1;
             Coord c1 = new Coord(row, col);
             if(!visited.contains(c1) && board[row][col] == letter ) poss.add(c1);
+            System.out.println("row " + row + " col " + col);
         }
 
         if(presentCoord.row != board.length -1  ) {
             int row = presentCoord.row +1,  col = presentCoord.col;
             Coord c1 = new Coord(row, col);
             if(!visited.contains(c1) && board[row][col] == letter ) poss.add(c1);
+            System.out.println("row " + row + " col " + col + board[row][col]);
         }
 
         if(presentCoord.col != board[0].length- 1 ) {
             int row = presentCoord.row,  col = presentCoord.col + 1;
             Coord c1 = new Coord(row, col);
             if(!visited.contains(c1) && board[row][col] == letter ) poss.add(c1);
+            System.out.println("row " + row + " col " + col + board[row][col] + letter);
         }
 
-
+        for(Coord i : poss) System.out.println(i.row + i.col);
         return poss;
     }
 
