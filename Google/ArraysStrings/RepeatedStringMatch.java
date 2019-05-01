@@ -17,7 +17,7 @@ public class RepeatedStringMatch {
                 if (as.indexOf(b) != -1) return rep;
             return -1;
         }
-    
+
 
     private boolean isSubString(String a, String b) {
 
