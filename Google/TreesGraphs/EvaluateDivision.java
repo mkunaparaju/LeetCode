@@ -1,37 +1,110 @@
 package Google.TreesGraphs;
 
-import java.util.HashMap;
+import Google.PrintingHelper;
+
+import java.util.*;
+
 
 public class EvaluateDivision {
 
     public static void main(String[] args) {
 
+
     }
 
-    public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
-        HashMap<String, Node> nodeMap= new HashMap<>();
+    //implements solution with examples
 
-        for(int i = 0; i< equations.length; i++){
-            String [] equation = equations[i];
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
 
-            Node toChildNode = new Node(equation[1],values[i]);
-            Node toParentNode  = new Node(equation[0], (1/values[i]));
+        HashMap<String, DivNode> nodeMap = new HashMap<>();
+        for (int i = 0; i < equations.size(); i++) {
+            List<String> equation = equations.get(i);
+            double val = values[i];
 
-            nodeMap.put(equation[0], toChildNode);
-            nodeMap.put(equation[1], toParentNode);
+            String start = equation.get(0);
+            String end = equation.get(1);
+            DivNode startNode = null;
+            DivNode endNode = null;
+
+            if(nodeMap.containsKey(start)){
+                startNode = nodeMap.get(start);
+            }else{
+                startNode = new DivNode(start);
+            }
+
+            HashMap<String, Double> neighborStart = startNode.neighbours;
+            if(!neighborStart.containsKey(end)) {
+                neighborStart.put(end, val);
+            }
+
+            if(nodeMap.containsKey(end)){
+                endNode = nodeMap.get(end);
+            }else{
+                endNode = new DivNode(end);
+            }
+
+            HashMap<String, Double> neighborEnd = endNode.neighbours;
+            if(!neighborEnd.containsKey(start)) {
+                neighborEnd.put(start, 1.0/val);
+            }
+
+        }
+        double [] ans = new double[queries.size()];
+        for(int i = 0; i < queries.size(); i++){
+
+            ans[i] = calculateDivision(queries.get(i).get(0), queries.get(i).get(1), nodeMap);
+
         }
 
-return null;
+        return null;
+    }
+
+    private double calculateDivision(String start, String end, HashMap<String, DivNode> nodeMap) {
+        if(!nodeMap.containsKey(start) || !nodeMap.containsKey(end)) return  -1;
+
+        HashSet<String> visited = new HashSet<>();
+        ArrayDeque<CalcNode> queue = new ArrayDeque<>();
+        queue.offer(new CalcNode(start, 1.0));
+        visited.add(start);
+
+
+        while(!queue.isEmpty()){
+            CalcNode st = queue.poll();
+            visited.add(st.name);
+            DivNode stNode = nodeMap.get(st.name);
+            HashMap<String, Double> neighbors = stNode.neighbours;
+
+            if(neighbors.containsKey(end)) return st.val*neighbors.get(end);
+            else{
+                Iterator<String> iter = neighbors.keySet().iterator();
+                while(iter.hasNext()){
+                    String name = iter.next();
+                    queue.offer(new CalcNode(name, neighbors.get(name) * st.val ));
+                }
+            }
+        }
+
+        return -1;
+    }
+
+}
+
+class DivNode {
+    String name;
+    HashMap<String, Double> neighbours;
+
+    DivNode(String name) {
+        this.name = name;
+        neighbours = new HashMap<>();
     }
 }
 
-class Node{
-    private String label;
-    private double value;
+class CalcNode{
+    String name;
+    Double val;
 
-    Node(String label, double value){
-        this.label = label;
-        this.value = value;
+    CalcNode(String name, Double val){
+        this.name = name;
+        this.val = val;
     }
-
 }

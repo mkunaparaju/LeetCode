@@ -8,13 +8,13 @@ public class DecodeWays {
 
         DecodeWays dw = new DecodeWays();
 
-        System.out.println(dw.numDecodings("10"));
+        System.out.println(dw.numDecodingsRecursive("31"));
     }
 
 
     public int numDecodingsRecursive(String in) {
 
-        if(in.length() ==0 || in == null) return 1;
+        if( in == null ||in.length() ==0 ) return 1;
 
         if( in.length() == 1 ) {
 
@@ -25,10 +25,10 @@ public class DecodeWays {
         int ways = 0;
         int length = in.length();
 
-        if(in.charAt(in.length() - 1) != '0') ways = numDecodings(in.substring(0, length - 1)) ;
+        if(in.charAt(in.length() - 1) != '0') ways = numDecodingsRecursive(in.substring(0, length - 1)) ;
 
         if(in.charAt(length-2) == '1' || (in.charAt(length - 2) == '2' && in.charAt(length - 1) < '7')){
-            ways += numDecodings(in.substring(0, length - 2));
+            ways += numDecodingsRecursive(in.substring(0, length - 2));
         }
 
         return ways;
@@ -46,12 +46,12 @@ public class DecodeWays {
             else count[1] = 1;
         }
         else{
-            System.out.println("inhere");
+//            System.out.println("inhere");
             if(in.charAt(1) == '0') count[1] = 1;
             else count[1]=2;
         }
 
-        System.out.println(count[0] + " " + count[1]);
+//        System.out.println(count[0] + " " + count[1]);
         for(int i = 2; i < in.length();i ++){
             if(in.charAt(i) !='0') count[i] = count[i] + count[i-1];
 
