@@ -1,8 +1,6 @@
 package Google.DynamicProgramming;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class WordBreak {
     public static void main(String[] args) {
@@ -18,7 +16,7 @@ public class WordBreak {
         List<String> wordDict2 = new ArrayList<String>(Arrays.asList(wd2));
         List<String> wordDict3 = new ArrayList<String>(Arrays.asList(wd3));
         WordBreak wb = new WordBreak();
-        System.out.println(wb.wordBreak(s3, wordDict3));
+        System.out.println(wb.wordBreakDp(s2, wordDict2));
     }
 
     public boolean wordBreak(String s, List<String> wordDict) {
@@ -34,5 +32,37 @@ public class WordBreak {
             }
         }
         return pos[s.length()];
+    }
+
+    HashMap<String,Boolean> containsMap = new HashMap<>();
+    public boolean wordBreakRec(String s, List<String> wordDict){
+        if(wordDict.contains(s)) return true;
+
+        if(containsMap.containsKey(s)) return containsMap.get(s);
+
+        boolean contains = false;
+        boolean split = false;
+        for(int i = 0; i < s.length(); i++){
+            contains = wordDict.contains(s.substring(0, i+1));
+            if(contains){
+                split = wordBreakRec(s.substring(i+1), wordDict);
+            }
+            if(contains && split) return true;
+        }
+        return contains&&split;
+    }
+
+
+    public Boolean wordBreakDp(String s , List<String> wordDict){
+        boolean [] arr = new boolean[s.length() +1];
+        arr[0] = true;
+        for(int i = 0; i < s.length(); i++){
+            if(arr[i]){
+                for(int j = i+1; j <= s.length(); j++){
+                    if(wordDict.contains(s.substring(i,j))) arr[j] = true;
+                }
+            }
+        }
+        return arr[s.length()];
     }
 }
